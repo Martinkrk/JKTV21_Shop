@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JKTV21_Shop:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JKTV21_Shop_jar</output-path>
+    <root id="archive" name="JKTV21_Shop.jar">
+      <element id="module-output" name="JKTV21_Shop" />
+    </root>
+  </artifact>
+</component>
