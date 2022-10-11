@@ -5,6 +5,9 @@ import entities.Product;
 import entities.Purchase;
 import entities.Arrays;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -82,41 +85,46 @@ public class Tools {
     }
 
     public void createPurchase() {
-
-        //CHOOSE CUSTOMER's ID
+        
         Integer customerId;
         Customer customer;
-        String yaynay;
+        //CHOOSE CUSTOMER's ID
         do {
-            System.out.println("Choose an id of a customer. 0 if new customer");
-            customerId = inputInt();
-            if (customerId != null && customerId <= ars.getCustomers().size()) break;
-        } while (true);
+            do {
+                System.out.println("Choose an id of a customer. 0 if new customer");
+                customerId = inputInt();
+                if (customerId != null && customerId <= ars.getCustomers().size()) break;
+            } while (true);
 
-        //NEW CLIENT?
-        if(customerId == 0){
-        do{
-            System.out.println("Register new client? Y/N");
-            yaynay = scn.nextLine();
-            if(yaynay.toUpperCase().contains("Y")){
-                customer = createCustomer(customerId);
-                break;
-            } else if (yaynay.toUpperCase().contains("N")) {
-                customer = ars.getCustomers().get(0);
-                break;
-            }
-            else{
-                System.out.println("Incorrect input! Try to type Y or N");
-            }
+            customer = assertClient(customerId);
+        
+            if(customer != null) break;
         }while (true);
-        }
-        else {
-            customer = ars.getCustomers().get(customerId);
-        }
 
-        Purchase purchase = new Purchase(customer);
-        ArrayList<Product> products = new ArrayList<>();
-
+        ArrayList<Product> products;
+        products = addProducts();
+        
+        double total = 0;
+        for(Product prod : products){
+            total += prod.getCost();
+        }
+        //IF NEW CLIENT, THEN APPLY A DISCOUNT
+        if(customerId == 0){
+            if(customer.isUsedDiscount() == false){
+            ars.getCustomers().get(customerId).setUsedDiscount(true);
+            //APPLY A DISCOUNT
+            total = applyDiscount(total);
+            System.out.println("Applied a discount for the client's first purchase");
+            }
+        }    
+        Purchase purchase = new Purchase(customer); 
+        purchase.setProducts(products);
+        purchase.setTotalPrice(total);
+        ars.setPurchases(purchase);
+    }
+    
+    public ArrayList<Product> addProducts(){
+        ArrayList<Product> products = new ArrayList<>();    
 
         boolean outerDo = true;
         do {
@@ -142,18 +150,57 @@ public class Tools {
                 }
             } while (true);
         } while (outerDo);
+        return products;
+    }
+    
+    public Customer assertClient(Integer customerId){
+        //CHOOSE CUSTOMER's ID
+        Customer customer;
+        String yaynay;
 
-        purchase.setProducts(products);
+        //NEW CLIENT?
+        if(customerId == 0){
+        do{
+            System.out.println("Register new client? Y/N");
+            yaynay = scn.nextLine();
+            if(yaynay.toUpperCase().contains("Y")){
+                customer = createCustomer(customerId);
+                break;
+            } else if (yaynay.toUpperCase().contains("N")) {
+                customer = ars.getCustomers().get(0);
+                break;
+            }
+            else{
+                System.out.println("Incorrect input! Try to type Y or N");
+            }
+        }while (true);
+            ars.setCustomers(customer);
+        }
+        else {
+            if(customerId <= ars.getCustomers().size()){
+                customer = ars.getCustomers().get(customerId);    
+            }
+            else{
+                return null;
+            }
+        }
+        return customer;
+    }
+        
+    public double applyDiscount(double total){
+        total = total *0.9;
+        
+        BigDecimal bd = BigDecimal.valueOf(total);
+        bd = bd.setScale(2, RoundingMode.CEILING);
 
-        ars.setPurchases(purchase);
+        return bd.doubleValue();
     }
 
     public Customer createCustomer(int id){
         Customer customer = new Customer(true);
-        ars.setCustomers(customer);
         return customer;
     }
-
+    //FIND
     public void find(ArrayList type){
         Integer Id;
         do {
