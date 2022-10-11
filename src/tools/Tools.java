@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class Tools {
         Scanner scn = new Scanner(System.in);
         Arrays ars = new Arrays();
+                
     //Did user input an int
     public Integer inputInt(){
         int input;
@@ -109,14 +110,11 @@ public class Tools {
             total += prod.getCost();
         }
         //IF NEW CLIENT, THEN APPLY A DISCOUNT
-        if(customerId == 0){
-            if(customer.isUsedDiscount() == false){
-            ars.getCustomers().get(customerId).setUsedDiscount(true);
+        if(customer.getId() != 0 && customer.isUsedDiscount() == false){
+            customer.setUsedDiscount(true);
             //APPLY A DISCOUNT
             total = applyDiscount(total);
-            System.out.println("Applied a discount for the client's first purchase");
-            }
-        }    
+        }   
         Purchase purchase = new Purchase(customer); 
         purchase.setProducts(products);
         purchase.setTotalPrice(total);
@@ -192,6 +190,8 @@ public class Tools {
         
         BigDecimal bd = BigDecimal.valueOf(total);
         bd = bd.setScale(2, RoundingMode.CEILING);
+        
+        System.out.println("Applied an one time discount!");
 
         return bd.doubleValue();
     }
@@ -204,7 +204,7 @@ public class Tools {
     public void find(ArrayList type){
         Integer Id;
         do {
-            System.out.println("Enter products's Id: ");
+            System.out.println("Enter item's Id: ");
             Id = inputInt();
 
             if (Id != null) {

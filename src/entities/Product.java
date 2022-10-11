@@ -1,7 +1,5 @@
 package entities;
 
-import java.math.BigDecimal;
-
 public class Product {
     private static int counter = 0;
     private final int Id;

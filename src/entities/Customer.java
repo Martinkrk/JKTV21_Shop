@@ -1,7 +1,7 @@
 package entities;
 
 public class Customer {
-    private static int counter = 0;
+    private static int counter = -1;
     private final int Id;
     private boolean Registered;
     private boolean UsedDiscount;
