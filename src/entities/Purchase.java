@@ -8,6 +8,15 @@ public class Purchase {
     private final int Id;
     private Customer Customer;
     private ArrayList<Product> Products = new ArrayList<>();
+    private double totalPrice;
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
     private final LocalDateTime PurchaseDate;
 
     //CONSTRUCTOR
@@ -53,7 +62,8 @@ public class Purchase {
                 "Id=" + Id +
                 "," + Customer +
                 ", Products=" + getProducts() +
-                ", PurchaseDate=" + PurchaseDate +
+                ", Total Price=" + getTotalPrice() +
+                ", Purchase Date=" + PurchaseDate +
                 '}';
     }
 }
