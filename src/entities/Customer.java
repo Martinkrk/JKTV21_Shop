@@ -36,6 +36,10 @@ public class Customer implements Serializable {
         UsedDiscount = usedDiscount;
     }
 
+    public static void setCounter(int len){
+        counter = len;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +

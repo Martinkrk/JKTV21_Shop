@@ -14,6 +14,8 @@ import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import java.nio.file.Files;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -238,9 +240,15 @@ public class Tools {
     //WHEN USER OPENS APPLICATION
     //READ FROM FILES
     public void onOpen(){
-            File prods = new File("..\\data\\products.txt");
-            File custs = new File("..\\data\\customers.txt");
-            File purcs = new File("..\\data\\purchases.txt");
+
+        //FILES
+            if(!new File("data").exists()){
+                new File("data").mkdirs();
+            }
+
+        File prods = new File("data\\products.txt");
+        File custs = new File("data\\customers.txt");
+        File purcs = new File("data\\purchases.txt");
             
         try{
             if(prods.createNewFile()) System.out.println("File created");
@@ -270,7 +278,7 @@ public class Tools {
     public void extractProducts(){
         ArrayList<Product> arr = new ArrayList<>();
         try{
-                FileInputStream file = new FileInputStream("..\\data\\products.txt");
+                FileInputStream file = new FileInputStream("data\\products.txt");
                 ObjectInputStream input = new ObjectInputStream(file);
                 
                 arr = (ArrayList<Product>) input.readObject();
@@ -281,28 +289,30 @@ public class Tools {
         }
         
         ars.defineProducts(arr);
+        Product.setCounter(arr.size());
     }
     
     public void extractCustomers(){
         ArrayList<Customer> arr = new ArrayList<>();
         try{
-                FileInputStream file = new FileInputStream("..\\data\\customers.txt");
-                ObjectInputStream input = new ObjectInputStream(file);
-                
-                arr = (ArrayList<Customer>) input.readObject();
-                input.close();
+            FileInputStream file = new FileInputStream("data\\customers.txt");
+            ObjectInputStream input = new ObjectInputStream(file);
+
+            arr = (ArrayList<Customer>) input.readObject();
+            input.close();
         }
         catch(Exception e){
             System.err.println(e);
         }
-        
+
         ars.defineCustomers(arr);
+        Customer.setCounter(arr.size());
     }
-    
+
     public void extractPurchases(){
         ArrayList<Purchase> arr = new ArrayList<>();
         try{
-                FileInputStream file = new FileInputStream("..\\data\\purchases.txt");
+                FileInputStream file = new FileInputStream("data\\purchases.txt");
                 ObjectInputStream input = new ObjectInputStream(file);
                 
                 arr = (ArrayList<Purchase>) input.readObject();
@@ -312,6 +322,7 @@ public class Tools {
             System.err.println(e);
         }
         ars.definePurchases(arr);
+        Purchase.setCounter(arr.size());
     }
     
       
@@ -322,7 +333,7 @@ public class Tools {
         if(ars.getProducts().size() != 0){
             //PRODUCTS
             try{
-                FileOutputStream fileProducts = new FileOutputStream("..\\data\\products.txt");
+                FileOutputStream fileProducts = new FileOutputStream("data\\products.txt");
                 ObjectOutputStream outputProducts = new ObjectOutputStream(fileProducts);
 
                 outputProducts.writeObject(ars.getProducts());
@@ -337,7 +348,7 @@ public class Tools {
         if(ars.getCustomers().size() != 0){
             //CUSTOMERS
             try{
-                FileOutputStream fileCustomers = new FileOutputStream("..\\data\\customers.txt");
+                FileOutputStream fileCustomers = new FileOutputStream("data\\customers.txt");
                 ObjectOutputStream outputCustomers = new ObjectOutputStream(fileCustomers);
 
                 outputCustomers.writeObject(ars.getCustomers());
@@ -352,7 +363,7 @@ public class Tools {
         if(ars.getPurchases().size() != 0){
             //PURCHASES
             try{
-                FileOutputStream filePurchases = new FileOutputStream("..\\data\\purchases.txt");
+                FileOutputStream filePurchases = new FileOutputStream("data\\purchases.txt");
                 ObjectOutputStream outputPurchases = new ObjectOutputStream(filePurchases);
 
                 outputPurchases.writeObject(ars.getPurchases());

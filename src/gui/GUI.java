@@ -116,7 +116,6 @@ public class GUI {
         b2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tool.browseCustomers();
                 b1.setVisible(false);
                 b2.setVisible(false);
                 b3.setVisible(false);

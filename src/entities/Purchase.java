@@ -57,6 +57,10 @@ public class Purchase implements Serializable {
         return PurchaseDate;
     }
 
+    public static void setCounter(int len) {
+        counter = len;
+    }
+
     @Override
     public String toString() {
         return "Purchase{" +

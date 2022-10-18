@@ -21,6 +21,7 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
+/JKTV21_Shop/
 
 ### VS Code ###
 .vscode/

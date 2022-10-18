@@ -36,6 +36,10 @@ public class Product implements Serializable {
         Cost = cost;
     }
 
+    public static void setCounter(int len){
+        counter = len;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
