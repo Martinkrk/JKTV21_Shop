@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="107a4546-f489-44b0-bf43-76b6e053d1c5" name="Changes" comment="First commit">
+    <list default="true" id="107a4546-f489-44b0-bf43-76b6e053d1c5" name="Changes" comment="Cleaning, Fixed counters">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/JKTV21_Shop/build.xml" beforeDir="false" />
@@ -99,7 +99,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665411201666</updated>
       <workItem from="1665411208065" duration="18326000" />
-      <workItem from="1666096388544" duration="3749000" />
+      <workItem from="1666096388544" duration="4126000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1665429846097</created>
@@ -108,7 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665429846097</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Cleaning, Fixed counters">
+      <created>1666100512123</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1666100512123</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -127,7 +134,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="First commit" />
+    <MESSAGE value="Cleaning, Fixed counters" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleaning, Fixed counters" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
