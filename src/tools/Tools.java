@@ -5,6 +5,12 @@ import entities.Product;
 import entities.Purchase;
 import entities.Arrays;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -162,7 +168,7 @@ public class Tools {
             System.out.println("Register new client? Y/N");
             yaynay = scn.nextLine();
             if(yaynay.toUpperCase().contains("Y")){
-                customer = createCustomer(customerId);
+                customer = createCustomer();
                 break;
             } else if (yaynay.toUpperCase().contains("N")) {
                 customer = ars.getCustomers().get(0);
@@ -196,7 +202,7 @@ public class Tools {
         return bd.doubleValue();
     }
 
-    public Customer createCustomer(int id){
+    public Customer createCustomer(){
         Customer customer = new Customer(true);
         return customer;
     }
@@ -227,5 +233,134 @@ public class Tools {
     }
     public void findPurchase() {
         find(ars.getPurchases());
+    }
+    
+    //WHEN USER OPENS APPLICATION
+    //READ FROM FILES
+    public void onOpen(){
+            File prods = new File("..\\data\\products.txt");
+            File custs = new File("..\\data\\customers.txt");
+            File purcs = new File("..\\data\\purchases.txt");
+            
+        try{
+            if(prods.createNewFile()) System.out.println("File created");
+            if(custs.createNewFile()) System.out.println("File created"); 
+            if(purcs.createNewFile()) System.out.println("File created");
+        }
+        catch(Exception e){
+            System.err.println(e);
+        }
+        
+        if(prods.canRead() && prods.length() != 0){
+            extractProducts();
+        }
+          
+        if(custs.canRead() && custs.length() != 0){
+            extractCustomers();
+        }
+        else{
+            ars.setCustomers(new Customer(false));
+        }
+
+        if(purcs.canRead() && purcs.length() != 0){
+            extractPurchases();
+        }
+    }
+    
+    public void extractProducts(){
+        ArrayList<Product> arr = new ArrayList<>();
+        try{
+                FileInputStream file = new FileInputStream("..\\data\\products.txt");
+                ObjectInputStream input = new ObjectInputStream(file);
+                
+                arr = (ArrayList<Product>) input.readObject();
+                input.close();
+        }
+        catch(Exception e){
+            System.err.println(e);
+        }
+        
+        ars.defineProducts(arr);
+    }
+    
+    public void extractCustomers(){
+        ArrayList<Customer> arr = new ArrayList<>();
+        try{
+                FileInputStream file = new FileInputStream("..\\data\\customers.txt");
+                ObjectInputStream input = new ObjectInputStream(file);
+                
+                arr = (ArrayList<Customer>) input.readObject();
+                input.close();
+        }
+        catch(Exception e){
+            System.err.println(e);
+        }
+        
+        ars.defineCustomers(arr);
+    }
+    
+    public void extractPurchases(){
+        ArrayList<Purchase> arr = new ArrayList<>();
+        try{
+                FileInputStream file = new FileInputStream("..\\data\\purchases.txt");
+                ObjectInputStream input = new ObjectInputStream(file);
+                
+                arr = (ArrayList<Purchase>) input.readObject();
+                input.close();
+        }
+        catch(Exception e){
+            System.err.println(e);
+        }
+        ars.definePurchases(arr);
+    }
+    
+      
+    //WHEN USER CLOSES APPLICATION
+    //WRITE TO FILES
+    public void onClose(){
+        //IF THERE ARE ELEMENTS IN PRODUCTS
+        if(ars.getProducts().size() != 0){
+            //PRODUCTS
+            try{
+                FileOutputStream fileProducts = new FileOutputStream("..\\data\\products.txt");
+                ObjectOutputStream outputProducts = new ObjectOutputStream(fileProducts);
+
+                outputProducts.writeObject(ars.getProducts());
+                outputProducts.close();
+            }
+            catch(Exception e){
+                System.err.println(e);
+            }  
+        }
+        
+        //IF THERE ARE ELEMENTS IN CUSTOMERS
+        if(ars.getCustomers().size() != 0){
+            //CUSTOMERS
+            try{
+                FileOutputStream fileCustomers = new FileOutputStream("..\\data\\customers.txt");
+                ObjectOutputStream outputCustomers = new ObjectOutputStream(fileCustomers);
+
+                outputCustomers.writeObject(ars.getCustomers());
+                outputCustomers.close();
+            }
+            catch(Exception e){
+                System.err.println(e);
+            }  
+        }
+        
+        //IF THERE ARE ELEMENTS IN PURCHASES
+        if(ars.getPurchases().size() != 0){
+            //PURCHASES
+            try{
+                FileOutputStream filePurchases = new FileOutputStream("..\\data\\purchases.txt");
+                ObjectOutputStream outputPurchases = new ObjectOutputStream(filePurchases);
+
+                outputPurchases.writeObject(ars.getPurchases());
+                outputPurchases.close();
+            }
+            catch(Exception e){
+                System.err.println(e);
+            }  
+        }
     }
 }

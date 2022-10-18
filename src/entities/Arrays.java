@@ -9,7 +9,6 @@ public class Arrays {
     private ArrayList<Purchase> purchases = new ArrayList<>();
 
     public Arrays() {
-        customers.add(new Customer(false));
     }
 
     public ArrayList<Product> getProducts() {
@@ -19,6 +18,10 @@ public class Arrays {
     public void setProducts(Product product) {
         this.products.add(product);
     }
+    
+    public void defineProducts(ArrayList<Product> products) {
+        this.products = products;
+    }
 
     public ArrayList<Customer> getCustomers() {
         return customers;
@@ -27,6 +30,10 @@ public class Arrays {
     public void setCustomers(Customer customer) {
         this.customers.add(customer);
     }
+    
+    public void defineCustomers(ArrayList<Customer> customers) {
+        this.customers = customers;
+    }
 
     public ArrayList<Purchase> getPurchases() {
         return purchases;
@@ -34,5 +41,9 @@ public class Arrays {
 
     public void setPurchases(Purchase purchase) {
         this.purchases.add(purchase);
+    }
+    
+    public void definePurchases(ArrayList<Purchase> purchases) {
+        this.purchases = purchases;
     }
 }

@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,6 +14,8 @@ public class GUI {
     public static String label;
     public void run(){
         Tools tool = new Tools();
+        //WHEN USER STARTS AN APPLICATION
+        tool.onOpen();
         
         JFrame f = new JFrame();
         
@@ -212,6 +216,17 @@ public class GUI {
                 l1.setText(label);
     } 
         });
+        
+        //ON CLOSING THE APPLICATION WINDOW
+        f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        f.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            tool.onClose();
+            f.dispose();
+            System.exit(0);
+        }
+    });
        
         f.setSize(400,400);
         f.setLayout(null);

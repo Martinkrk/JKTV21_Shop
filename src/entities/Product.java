@@ -1,6 +1,8 @@
 package entities;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private static int counter = 0;
     private final int Id;
     private String Name;

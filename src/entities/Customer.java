@@ -1,7 +1,9 @@
 package entities;
 
-public class Customer {
-    private static int counter = -1;
+import java.io.Serializable;
+
+public class Customer implements Serializable {
+    private static int counter = 0;
     private final int Id;
     private boolean Registered;
     private boolean UsedDiscount;
