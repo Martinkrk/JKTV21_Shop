@@ -1,17 +1,53 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import tools.Tools;
 
 public class GUI {
+    
+    //BUTTONS
+    JButton b1 = new JButton("Search...");
+    JButton b2 = new JButton("Add...");
+    JButton b3 = new JButton("Products");
+    JButton b4 = new JButton("Customers");
+    JButton b5 = new JButton("Purchases");
+    JButton b6 = new JButton("Back");
+    JButton b7 = new JButton("Search");
+    JLabel l1 = new JLabel("Label", SwingConstants.CENTER);
+    
+    //LABELS ARRAY
+    ArrayList<JLabel> labelArray = new ArrayList<>();
+    
+    //PANE
+    JPanel pane = new JPanel();
+    
+    //SIZES
+    int W_Width = 1000;
+    int W_Height = 400;
+
     public static String label;
+    boolean searching = false;
+    boolean adding = false;
+    boolean searchMenu = false;
+    boolean addMenu = false;
+    
+   //START
+    
     public void run(){
         Tools tool = new Tools();
         //WHEN USER STARTS AN APPLICATION
@@ -19,95 +55,82 @@ public class GUI {
         
         JFrame f = new JFrame();
         
-        label = "Choose an option";
         
+        label = "Choose an option";
         //LABEL 1
-        JLabel l1 = new JLabel("Label", SwingConstants.CENTER);
         l1.setText(label);
         l1.setBounds(100, 50, 200, 25);
         f.add(l1);
         
         //BUTTON 1
-        JButton b1 = new JButton("Browse...");
         b1.setBounds(150,100,100,25);
         f.add(b1);
-        
+              
         //BUTTON 2
-        JButton b2 = new JButton("Find...");
         b2.setBounds(150,150,100,25);
         f.add(b2);
         
         //BUTTON 3
-        JButton b3 = new JButton("Add...");
-        b3.setBounds(150,200,100,25);
+        b3.setBounds(150,100,100,25);
         f.add(b3);
+        b3.setVisible(false);
         
         //BUTTON 4
-        JButton b4 = new JButton("Products");
-        b4.setBounds(150,100,100,25);
+        b4.setBounds(150,150,100,25);
         f.add(b4);
         b4.setVisible(false);
         
         //BUTTON 5
-        JButton b5 = new JButton("Customers");
-        b5.setBounds(150,150,100,25);
+        b5.setBounds(150,200,100,25);
         f.add(b5);
         b5.setVisible(false);
         
         //BUTTON 6
-        JButton b6 = new JButton("Purchases");
-        b6.setBounds(150,200,100,25);
+        b6.setBounds(150,250,100,25);
         f.add(b6);
         b6.setVisible(false);
         
-        //BUTTON 7
-        JButton b7 = new JButton("Find a product by its Id");
-        b7.setBounds(150,100,100,25);
+        //SEARCH
+        
+        //Search Bar
+        
+        JTextArea ta1 = new JTextArea();
+        ta1.setBounds(10,20,200,20);
+        f.add(ta1);
+        ta1.setVisible(false);
+        ta1.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+        //BUTTON "SEARCH"
+        
+        b7.setBounds(220,20,100,20);
         f.add(b7);
         b7.setVisible(false);
         
-        //BUTTON 8
-        JButton b8 = new JButton("Find a customer by its Id");
-        b8.setBounds(150,150,100,25);
-        f.add(b8);
-        b8.setVisible(false);
+        //List
         
-        //BUTTON 9
-        JButton b9 = new JButton("Find a purchase by its Id");
-        b9.setBounds(150,200,100,25);
-        f.add(b9);
-        b9.setVisible(false);
+//        pane.setBackground(Color.gray);   //TO SEE IT FOR TESTING PURPOSES
+        pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        f.getContentPane().setLayout(new FlowLayout());  
         
-        //BUTTON 10
-        JButton b10 = new JButton("Product");
-        b10.setBounds(150,100,100,25);
-        f.add(b10);
-        b10.setVisible(false);
+        JScrollPane sp = new JScrollPane(pane);
         
-        //BUTTON 11
-        JButton b11 = new JButton("Purchase");
-        b11.setBounds(150,150,100,25);
-        f.add(b11);
-        b11.setVisible(false);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);  
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
         
-        //BUTTON 12
-        JButton b12 = new JButton("Back");
-        b12.setBounds(150,250,100,25);
-        f.add(b12);
-        b12.setVisible(false);
-        
+        f.getContentPane().add(sp);
+                
         //LISTENERS
         
         b1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                searching = true;
                 b1.setVisible(false);
                 b2.setVisible(false);
-                b3.setVisible(false);
+                b3.setVisible(true);
                 b4.setVisible(true);
                 b5.setVisible(true);
                 b6.setVisible(true);
-                b12.setVisible(true);
                 label = "Choose an item to browse:";
                 l1.setText(label);
     } 
@@ -116,103 +139,72 @@ public class GUI {
         b2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                adding = true;
                 b1.setVisible(false);
                 b2.setVisible(false);
-                b3.setVisible(false);
-                b7.setVisible(true);
-                b8.setVisible(true);
-                b9.setVisible(true);
-                b12.setVisible(true);
-                
-    } 
-        });
-        
-        b3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.browsePurchases();
-                b1.setVisible(false);
-                b2.setVisible(false);
-                b3.setVisible(false);
-                b10.setVisible(true);
-                b11.setVisible(true);
-                b12.setVisible(true);
-    } 
-        });
-        
-        b4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.browseProducts();
-    } 
-        });
-        
-        b5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.browseCustomers();
-    } 
-        });
-        
-        b6.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.browsePurchases();
-    } 
-        });
-        
-        b7.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.findProduct();
-    } 
-        });
-        
-        b8.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.findCustomer();
-    } 
-        });
-        
-        b9.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.findPurchase();
-    } 
-        });
-        
-        b10.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.createProduct();
-    } 
-        });
-        
-        b11.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tool.createPurchase();
-    } 
-        });
-        
-        b12.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                b1.setVisible(true);
-                b2.setVisible(true);
                 b3.setVisible(true);
-                b4.setVisible(false);
-                b5.setVisible(false);
-                b6.setVisible(false);
-                b7.setVisible(false);
-                b8.setVisible(false);
-                b9.setVisible(false);
-                b10.setVisible(false);
-                b11.setVisible(false);
-                b12.setVisible(false);
-                label = "Choose an option";
+                b4.setVisible(true);
+                b5.setVisible(true);
+                b6.setVisible(true);
+                label = "Choose an item to add:";
                 l1.setText(label);
+    } 
+        });
+        
+            b3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(adding){
+                    tool.createProduct();
+                }
+                else if(searching){
+                    searchMenu = true;
+                    
+                    //LIST
+                    hideSelectionMenu();
+                    l1.setVisible(false);
+                    sp.setBounds(10, 60, W_Width-25, W_Height-97);
+                    pane.setVisible(true);
+                    int i = 0;
+                    for(String s : tool.browseProducts()){
+                        labelArray.add(new JLabel(s));
+                        labelArray.get(labelArray.size() - 1).setBounds(10, (i*20+50), 40, 20);
+                        pane.add(labelArray.get(labelArray.size() - 1));
+                        i++;
+                    };
+                    
+                    //SEARCH BAR
+                    ta1.setVisible(true);
+                    b7.setVisible(true);
+                    b6.setBounds(330, 10, 100, 20);
+                    b6.setVisible(true);
+                }
+    } 
+        });
+                
+            b4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hideSelectionMenu();
+    } 
+        });
+                                
+            b5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hideSelectionMenu();
+    } 
+        });
+            
+            b6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(searchMenu || addMenu){
+                    backToSelection();
+                }
+                else{
+                    toMainMenu();
+                }
     } 
         });
         
@@ -227,8 +219,39 @@ public class GUI {
         }
     });
        
-        f.setSize(400,400);
+        f.setSize(W_Width,W_Height);
         f.setLayout(null);
         f.setVisible(true);
+    }
+    
+    public void toMainMenu(){
+        searching = false;
+        adding = false;
+        b1.setVisible(true);
+        b2.setVisible(true);
+        b3.setVisible(false);
+        b4.setVisible(false);
+        b5.setVisible(false);
+        b6.setVisible(false);
+        label = "Choose an option";
+        l1.setText(label);
+    }
+    
+    public void hideSelectionMenu(){
+        b3.setVisible(false);
+        b4.setVisible(false);
+        b5.setVisible(false);
+        b6.setVisible(false);
+    }
+    
+    public void backToSelection(){
+        b7.setVisible(false);
+        b6.setBounds(150,250,100,25);
+        pane.setVisible(false);
+        labelArray.clear();
+        b3.setVisible(true);
+        b4.setVisible(true);
+        b5.setVisible(true);
+        ta1.set
     }
 }

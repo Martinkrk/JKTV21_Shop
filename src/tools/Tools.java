@@ -77,10 +77,12 @@ public class Tools {
         ars.setProducts(new Product(name, price));
     }
 
-    public void browseProducts(){
-        for(Object product : ars.getProducts()){
-            System.out.println(product);
+    public String[] browseProducts(){
+        String[] str = new String[ars.getProducts().size()];
+        for(int i = 0; i < ars.getProducts().size(); i++){
+            str[i] = ars.getProducts().get(i).toString();
         }
+        return str;
     }
     public void browseCustomers(){
         for(Object customer : ars.getCustomers()){
