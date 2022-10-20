@@ -84,15 +84,19 @@ public class Tools {
         }
         return str;
     }
-    public void browseCustomers(){
-        for(Object customer : ars.getCustomers()){
-            System.out.println(customer);
+    public String[] browseCustomers(){
+        String[] str = new String[ars.getCustomers().size()];
+        for(int i = 0; i < ars.getCustomers().size(); i++){
+            str[i] = ars.getCustomers().get(i).toString();
         }
+        return str;
     }
-    public void browsePurchases(){
-        for(Object purchase : ars.getPurchases()){
-            System.out.println(purchase);
+    public String[] browsePurchases(){
+        String[] str = new String[ars.getPurchases().size()];
+        for(int i = 0; i < ars.getPurchases().size(); i++){
+            str[i] = ars.getPurchases().get(i).toString();
         }
+        return str;
     }
 
     public void createPurchase() {
