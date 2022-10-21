@@ -36,9 +36,9 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searching = true;
-                itemsAction();
-                c.label = "Choose an item to browse:";
-                c.l1.setText(c.label);
+                toggleMainMenu(false);
+                toggleSelectionMenu(true);
+                c.l1.setText("Choose an item to search:");
     } 
         });
         
@@ -46,30 +46,30 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 adding = true;
-                itemsAction();
-                c.label = "Choose an item to add:";
-                c.l1.setText(c.label);
+                toggleMainMenu(false);
+                toggleSelectionMenu(true);
+                c.l1.setText("Choose an item to add:");
     } 
         });
         
             c.b3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(adding){
-                    tool.createProduct();
+                if(searching || adding){
+                    toggleSelectionMenu(false);
+                    c.l1.setVisible(false);
+                    if(searching){
+                        showList(0);
+                    }
+                    else if(adding){
+                        
+                    }
+                    else{
+                        System.err.println("ERROR, not searching or adding? | b3 inner");
+                    }
                 }
-                else if(searching){
-                    
-                    ifSearching();
-                    
-                    int i = 0;
-                    for(String s : tool.browseProducts()){
-                        labelArray.add(new JLabel(s));
-                        labelArray.get(labelArray.size() - 1).setBounds(10, (i*20+50), 40, 20);
-                        c.pane.add(labelArray.get(labelArray.size() - 1));
-                        i++;
-                    };
-                    searchBar();
+                else{
+                    System.err.println("ERROR, not searching or adding? | b3 outer");
                 }
     } 
         });
@@ -77,29 +77,14 @@ public class GUI {
             c.b4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(adding){
-                    tool.createCustomer();
-                }
-                else if(searching){
-                    
-                    ifSearching();
-                    
-                    int i = 0;
-                    for(String s : tool.browseCustomers()){
-                        labelArray.add(new JLabel(s));
-                        labelArray.get(labelArray.size() - 1).setBounds(10, (i*20+50), 40, 20);
-                        c.pane.add(labelArray.get(labelArray.size() - 1));
-                        i++;
-                    };
-                    searchBar();
-                }
+
     } 
         });
                                 
             c.b5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hideSelectionMenu();
+                
     } 
         });
             
@@ -107,10 +92,19 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(searchMenu || addMenu){
-                    backToSelection();
+                    c.l1.setVisible(true);
+                 return;   
                 }
-                else{
-                    toMainMenu();
+                else if(searching || adding){
+                    toggleSelectionMenu(false);
+                    toggleMainMenu(true);
+                    c.l1.setText("Choose an option");
+                    if(searching){
+                        searching = false;
+                    }
+                    else if(adding){
+                        adding = false;
+                    }
                 }
     } 
         });
@@ -124,67 +118,23 @@ public class GUI {
             c.f.dispose();
             System.exit(0);
         }
-    });
+    });  
        
     }
     
-    public void toMainMenu(){
-        searching = false;
-        adding = false;
-        c.b1.setVisible(true);
-        c.b2.setVisible(true);
-        c.b3.setVisible(false);
-        c.b4.setVisible(false);
-        c.b5.setVisible(false);
-        c.b6.setVisible(false);
-        c.label = "Choose an option";
-        c.l1.setText(c.label);
+    public void toggleMainMenu(boolean view){
+        c.b1.setVisible(view);
+        c.b2.setVisible(view);
     }
     
-    public void hideSelectionMenu(){
-        c.b3.setVisible(false);
-        c.b4.setVisible(false);
-        c.b5.setVisible(false);
-        c.b6.setVisible(false);
+    public void toggleSelectionMenu(boolean view){
+        c.b3.setVisible(view);
+        c.b4.setVisible(view);
+        c.b5.setVisible(view);
+        c.b6.setVisible(view);
     }
     
-    public void backToSelection(){
-        searchMenu = false;
-        addMenu = false;
-        c.l1.setVisible(true);
-        c.b7.setVisible(false);
-        c.b6.setBounds(450,250,100,25);
-        c.pane.setVisible(false);
-        labelArray.clear();
-        c.b3.setVisible(true);
-        c.b4.setVisible(true);
-        c.b5.setVisible(true);
-        c.ta1.setVisible(false);
-    }
-    
-    public void itemsAction(){
-        c.b1.setVisible(false);
-        c.b2.setVisible(false);
-        c.b3.setVisible(true);
-        c.b4.setVisible(true);
-        c.b5.setVisible(true);
-        c.b6.setVisible(true);
-    }
-    
-    public void searchBar(){
-        c.ta1.setVisible(true);
-        c.b7.setVisible(true);
-        c.b6.setBounds(330, 20, 100, 20);
-        c.b6.setVisible(true);
-    }
-    
-    public void ifSearching(){
-        searchMenu = true;
-                    
-        //LIST
-        hideSelectionMenu();
-        c.l1.setVisible(false);
-        c.sp.setBounds(10, 60, c.W_Width, c.W_Height-97);
-        c.pane.setVisible(true);
+    public void showList(int item){
+        
     }
 }

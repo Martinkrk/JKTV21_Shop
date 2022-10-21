@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -10,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 
 
@@ -29,7 +29,7 @@ public class Components {
     //LABELS
     
     public static String label;
-    JLabel l1 = new JLabel(label);
+    JLabel l1 = new JLabel("Label", SwingConstants.CENTER);
     
     //TEXTAREAS
     
@@ -49,8 +49,7 @@ public class Components {
         
         //PANES
         
-        pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-        f.getContentPane().setLayout(new FlowLayout());  
+        pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS)); 
         
         JScrollPane sp = new JScrollPane(pane);
         
@@ -107,7 +106,6 @@ public class Components {
         //FRAME
         
         f.setSize(W_Width,W_Height);
-        f.setLayout(null);
         f.setVisible(true);
     } 
 }
