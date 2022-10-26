@@ -50,6 +50,10 @@ public class Product implements Serializable{
 
     @Override
     public String toString() {
-        return "Product{" + "Id=" + Id + ", Name=" + Name + ", Cost=" + Cost + ", In stock=" + amount + '}';
+        return "Product" + 
+                " : Id=" + Id + 
+                " --- Name=" + Name + 
+                " --- Cost=" + Cost + 
+                " --- In stock=" + amount + "\n";
     }
 }

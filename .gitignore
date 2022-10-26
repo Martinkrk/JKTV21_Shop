@@ -21,7 +21,6 @@ bin/
 /dist/
 /nbdist/
 /.nb-gradle/
-/JKTV21_Shop/
 nbproject/
 build.xml
 
@@ -33,3 +32,8 @@ build.xml
 /JAvaSHOPcwJPTV21/nbproject/private/
 /JAvaSHOPcwJPTV21/build/
 /JAvaSHOPcwJPTV21/dist/
+/build/
+
+### My ###
+data/
+/JKTV21_Shop/

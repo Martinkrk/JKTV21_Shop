@@ -63,6 +63,15 @@ public class Purchase implements Serializable {
 
     @Override
     public String toString() {
-        return "Purchase{" + "Id=" + Id + ", " + customer + ", " + products + ", totalPrice=" + totalPrice + '}';
+        String cust = "\t" + customer + "\n";
+        String prods = "";
+        for(String prod : products){
+            prods += "\t" + prod;
+        }
+        return "Purchase" + 
+                " : Id=" + Id + 
+                " --- totalPrice=" + totalPrice + "\n" +
+                cust +
+                prods;
     }  
 }

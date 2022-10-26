@@ -70,6 +70,10 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer{" + "Id=" + Id + ", Registered=" + Registered + ", UsedDiscount=" + UsedDiscount + ", balance=" + balance + '}';
+        return "Customer" + 
+                " : Id=" + Id + 
+                " --- Registered=" + Registered + 
+                " --- UsedDiscount=" + UsedDiscount + 
+                " --- balance=" + balance;
     } 
 }

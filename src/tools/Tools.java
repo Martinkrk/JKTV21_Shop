@@ -34,17 +34,18 @@ public class Tools {
             }
             catch (java.util.InputMismatchException e){
                 System.err.println("Wrong input! Use integers!");
-                return null;
+                continue;
             }
             catch (Exception e){
                 System.err.println(e);
-                return null;
+                continue;
             }
             finally {
                 scn.nextLine();
             }
                 if(input < range[0] || input > range[1]){
                     System.out.println("Wrong range!");
+                    continue;
                 }
                 else{
                     break;
@@ -54,22 +55,32 @@ public class Tools {
         return input;
     }
 
-    public Double inputDouble(){
+    public Double inputDouble(double[] range){
         Double input;
-        try{
-            input = scn.nextDouble();
-        }
-        catch (java.util.InputMismatchException e){
-            System.err.println("Wrong input! Use doubles!");
-            return null;
-        }
-        catch (Exception e){
-            System.err.println(e);
-            return null;
-        }
-        finally {
-            scn.nextLine();
-        }
+        do{
+            try{
+                input = scn.nextDouble();
+            }
+            catch (java.util.InputMismatchException e){
+                System.err.println("Wrong input! Use Doubles!");
+                continue;
+            }
+            catch (Exception e){
+                System.err.println(e);
+                continue;
+            }
+            finally {
+                scn.nextLine();
+            }
+                if(input < range[0] || input > range[1]){
+                    System.out.println("Wrong range!");
+                    continue;
+                }
+                else{
+                    break;
+                }
+        }while(true);
+        
         return input;
     }
 
@@ -81,14 +92,14 @@ public class Tools {
         name = scn.nextLine();
         do{
             System.out.println("Enter products price:");
-            price = inputDouble();
+            price = inputDouble(new double[] {0.01, 10000}); //param range
 
             if(price != null) break;
         }while (true);
         
         do{
             System.out.println("Enter amount of products to stock:");
-            amount = inputInt(new int[] {1,10000});
+            amount = inputInt(new int[] {1,10000}); //param range
 
             if(amount != null) break;
         }while (true);
@@ -136,7 +147,7 @@ public class Tools {
         do {
             do {
                 System.out.println("Choose an id of a customer. 0 if new customer");
-                customerId = inputInt(new int[] {0, 10000});
+                customerId = inputInt(new int[] {0, ars.getCustomers().size()-1});
                 if (customerId != null && customerId <= ars.getCustomers().size()) break;
             } while (true);
 
@@ -192,7 +203,7 @@ public class Tools {
         do {
             do {
                 System.out.println("Choose an id of a product.");
-                Integer productId = inputInt(new int[] {0, 10000});
+                Integer productId = inputInt(new int[] {0, ars.getProducts().size()-1});
                 if (productId != null && productId <= ars.getProducts().size() - 1) {
                     products.add(ars.getProducts().get(productId));
                     break;
@@ -280,7 +291,7 @@ public class Tools {
         id = inputInt(new int[] {1, ars.getCustomers().size()});
         
         System.out.println("Input the amount of cash to add:");
-        money = inputDouble();
+        money = inputDouble(new double[] {0.01, 10000});
         
         ars.getCustomers().get(id).addBalance(money);
     }
