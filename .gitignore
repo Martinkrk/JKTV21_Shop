@@ -1,0 +1,35 @@
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/JKTV21_Shop/
+nbproject/
+build.xml
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+/JAvaSHOPcwJPTV21/nbproject/private/
+/JAvaSHOPcwJPTV21/build/
+/JAvaSHOPcwJPTV21/dist/
