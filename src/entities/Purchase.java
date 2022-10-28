@@ -1,8 +1,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Purchase implements Serializable {
     private static int counter = 0;
@@ -17,12 +19,17 @@ public class Purchase implements Serializable {
         this.customer = customer;
         this.products = products;
         this.totalPrice = totalPrice;
-        this.purchaseDate = getDate();
+        this.purchaseDate = createDate();
+    }
+    
+    public LocalDateTime createDate(){
+        LocalDate now = LocalDate.now();
+        LocalDate dateNow = now;
+        return LocalDateTime.of(dateNow, LocalTime.MIDNIGHT);
     }
     
     public LocalDateTime getDate(){
-        LocalDateTime ldt = LocalDateTime.now();
-        return ldt;
+        return purchaseDate;
     }
 
     public static int getCounter() {
@@ -70,7 +77,8 @@ public class Purchase implements Serializable {
         }
         return "Purchase" + 
                 " : Id=" + Id + 
-                " --- totalPrice=" + totalPrice + "\n" +
+                " --- Total Price=" + totalPrice +
+                " --- Purchase Date=" + purchaseDate + "\n" +
                 cust +
                 prods;
     }  

@@ -11,6 +11,9 @@ public class App {
         //APP START
         tool.onOpen();
         
+        //TESTING
+        tool.createDateRanges();
+        
         boolean mainloop = true;
         int userInput; int userInputNested;
         

@@ -16,6 +16,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import java.nio.file.Files;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -325,13 +329,11 @@ public class Tools {
         File prods = new File("data\\products.txt");
         File custs = new File("data\\customers.txt");
         File purcs = new File("data\\purchases.txt");
-        File stats = new File("data\\statistics.txt");
             
         try{
             if(prods.createNewFile()) System.out.println("File created");
             if(custs.createNewFile()) System.out.println("File created"); 
             if(purcs.createNewFile()) System.out.println("File created");
-            if(stats.createNewFile()) System.out.println("File created");
         }
         catch(Exception e){
             System.err.println(e);
@@ -350,10 +352,6 @@ public class Tools {
 
         if(purcs.canRead() && purcs.length() != 0){
             extractPurchases();
-        }
-        
-        if(stats.canRead() && stats.length() != 0){
-            extractStatistics();
         }
     }
     
@@ -405,26 +403,7 @@ public class Tools {
         }
         ars.setPurchases(arr);
         Purchase.setCounter(arr.size());
-    }
-    
-    public void extractStatistics(){
-        Statistics statsEx = new Statistics();
-        try{
-                FileInputStream file = new FileInputStream("data\\statistics.txt");
-                ObjectInputStream input = new ObjectInputStream(file);
-                
-                statsEx = (Statistics) input.readObject();
-                input.close();
-        }
-        catch(Exception e){
-            System.err.println(e);
-        }
-        
-        stats.setTotalEarnings(statsEx.getTotalEarnings());
-        stats.setTotalProductsSold(statsEx.getTotalProductsSold());
-        stats.setTotalRegisteredCustomers(statsEx.getTotalRegisteredCustomers());
-    }
-    
+    } 
       
     //WHEN USER CLOSES APPLICATION
     //WRITE TO FILES
@@ -485,5 +464,33 @@ public class Tools {
             catch(Exception e){
                 System.err.println(e);
             }
+    }
+    
+    //STATISTICS FOR DIFFERENT TIME RANGES
+    
+    public void createDateRanges(){
+        LocalDate now = LocalDate.now();
+        ars.getDates().clear();
+        
+        LocalDate yearStart = now.withDayOfYear(1);
+        LocalDateTime yearStartD = LocalDateTime.of(yearStart, LocalTime.MIDNIGHT);
+        ars.addDate(yearStartD);
+        
+        LocalDate monthStart = now.withDayOfMonth(1);
+        LocalDateTime monthStartD = LocalDateTime.of(monthStart, LocalTime.MIDNIGHT);
+        ars.addDate(monthStartD);
+        
+        LocalDate weekStart = now.with(DayOfWeek.MONDAY);
+        LocalDateTime weekStartD = LocalDateTime.of(weekStart, LocalTime.MIDNIGHT);
+        ars.addDate(weekStartD);
+        
+        LocalDate thisDay = now;
+        LocalDateTime thisDayD = LocalDateTime.of(thisDay, LocalTime.MIDNIGHT);
+        ars.addDate(thisDayD);
+    }
+    
+    public String calculateStatistics(int timeRange){
+        
+        return "";
     }
 }

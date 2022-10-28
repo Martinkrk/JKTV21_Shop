@@ -52,7 +52,10 @@ public class Statistics implements Serializable {
 
     @Override
     public String toString() {
-        return "Statistics{" + "totalProductsSold=" + totalProductsSold + ", totalRegisteredCustomers=" + totalRegisteredCustomers + ", totalEarnings=" + totalEarnings + '}';
+        return "===For Today===\n" +
+                "totalProductsSold=" + totalProductsSold +
+                " --- totalRegisteredCustomers=" + totalRegisteredCustomers + 
+                " --- totalEarnings=" + totalEarnings + '\n';
     }
     
     

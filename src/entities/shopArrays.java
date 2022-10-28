@@ -5,6 +5,7 @@
  */
 package entities;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,7 @@ public class shopArrays {
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Customer> customers = new ArrayList<>();
     private ArrayList<Purchase> purchases = new ArrayList<>();
+    private ArrayList<LocalDateTime> dates = new ArrayList<>();
 
     public shopArrays() {
     }
@@ -54,5 +56,17 @@ public class shopArrays {
     
     public void addPurchase(Purchase purchase) {
         this.purchases.add(purchase);
+    }
+
+    public ArrayList<LocalDateTime> getDates() {
+        return dates;
+    }
+
+    public void setDates(ArrayList<LocalDateTime> dates) {
+        this.dates = dates;
+    }
+    
+    public void addDate(LocalDateTime date) {
+        this.dates.add(date);
     }
 }
