@@ -312,11 +312,7 @@ public class Tools {
         ars.getProducts().get(input).addStock(amount);
         
     }
-    
-    public void showStatistics(){
-        System.out.println(stats);
-    }
-    
+        
     //WHEN USER OPENS APPLICATION
     //READ FROM FILES
     public void onOpen(){
@@ -472,25 +468,46 @@ public class Tools {
         LocalDate now = LocalDate.now();
         ars.getDates().clear();
         
-        LocalDate yearStart = now.withDayOfYear(1);
+        LocalDate yearStart = now.withDayOfYear(1).minusDays(1);
         LocalDateTime yearStartD = LocalDateTime.of(yearStart, LocalTime.MIDNIGHT);
         ars.addDate(yearStartD);
         
-        LocalDate monthStart = now.withDayOfMonth(1);
+        LocalDate monthStart = now.withDayOfMonth(1).minusDays(1);
         LocalDateTime monthStartD = LocalDateTime.of(monthStart, LocalTime.MIDNIGHT);
         ars.addDate(monthStartD);
+        System.out.println(monthStartD);
         
         LocalDate weekStart = now.with(DayOfWeek.MONDAY);
         LocalDateTime weekStartD = LocalDateTime.of(weekStart, LocalTime.MIDNIGHT);
         ars.addDate(weekStartD);
         
-        LocalDate thisDay = now;
+        LocalDate thisDay = LocalDate.now().minusDays(1);
         LocalDateTime thisDayD = LocalDateTime.of(thisDay, LocalTime.MIDNIGHT);
         ars.addDate(thisDayD);
+//        System.out.println(thisDayD);
     }
     
-    public String calculateStatistics(int timeRange){
+        public void showStatistics(){
+        String out = "";
+        int[] costs = new int[4];
         
-        return "";
+        for(int i = 0; i < ars.getDates().size(); i++){
+            for(Purchase p : ars.getPurchases()){
+                if(p.getDate().isAfter(ars.getDates().get(i))){
+                    costs[i] += p.getTotalPrice();
+                }
+            }
+        }
+        
+        out += "===THIS YEAR===\n"
+                + "Total earned: " + costs[0] + "\n\n" +
+                "===THIS MONTH===\n" 
+                + "Total earned: " + costs[1] + "\n\n" +
+                "===THIS WEEK===\n"
+                + "Total earned: " + costs[2] + "\n\n" +
+                "===  TODAY  ===\n"
+                + "Total earned: " + costs[3] + "\n";
+        
+            System.out.println(out);
     }
 }

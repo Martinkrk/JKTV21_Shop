@@ -26,9 +26,9 @@ public class Statistics implements Serializable {
         this.totalRegisteredCustomers += 1;
     }
     
-        public void addTotalProductsSold() {
+    public void addTotalProductsSold() {
         this.totalProductsSold += 1;
-    }
+}
 
     public int getTotalRegisteredCustomers() {
         return totalRegisteredCustomers;
@@ -52,10 +52,7 @@ public class Statistics implements Serializable {
 
     @Override
     public String toString() {
-        return "===For Today===\n" +
-                "totalProductsSold=" + totalProductsSold +
-                " --- totalRegisteredCustomers=" + totalRegisteredCustomers + 
-                " --- totalEarnings=" + totalEarnings + '\n';
+        return "eh..";
     }
     
     
