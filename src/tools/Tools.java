@@ -22,7 +22,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Scanner;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 
 public class Tools {
     Scanner scn = new Scanner(System.in);
@@ -143,7 +148,6 @@ public class Tools {
     }
 
     public void createPurchase() {
-        
         Integer customerId;
         Customer customer;
         boolean canAfford = true;
@@ -162,8 +166,30 @@ public class Tools {
 
         ArrayList<Product> products;
         products = addProducts();
+        HashMap<Product, Integer> countedMap = new HashMap<>();
+        for(Product prod : products){
+            if(countedMap.containsKey(prod)){
+                countedMap.replace(prod, countedMap.get(prod), countedMap.get(prod)+1);
+            }
+            else{
+                countedMap.put(prod, 1);
+            }
+        }
+        System.out.println(countedMap);
         
         double total = 0;
+        boolean instock = true;
+        for(Product prod : countedMap.keySet()){
+            if(countedMap.get(prod) > prod.getAmount()){
+                instock = false;
+                break;
+            }
+        }
+        if(instock == false){
+            System.err.println("Not enough products in stock!");
+            return;
+        }
+        
         for(Product prod : products){
             total += prod.getCost();
             prod.substractStock();
@@ -182,6 +208,7 @@ public class Tools {
             }
             else{
                 canAfford = false;
+                System.err.println("The customer may not acquire these items for they has insufficient funds!");
             }
         }
         if(canAfford){

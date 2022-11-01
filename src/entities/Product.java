@@ -40,6 +40,10 @@ public class Product implements Serializable{
         this.Cost = Cost;
     }
     
+    public int getAmount(){
+        return amount;
+    }
+    
     public void addStock(Integer amount){
         this.amount += amount;
     }
