@@ -1,5 +1,6 @@
 package tools;
 
+import com.mysql.jdbc.DatabaseMetaData;
 import entities.Customer;
 import entities.Product;
 import entities.Purchase;
@@ -14,25 +15,28 @@ import java.io.ObjectOutputStream;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.ResultSet;
 
-import java.nio.file.Files;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingInt;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class Tools {
     Scanner scn = new Scanner(System.in);
     shopArrays ars = new shopArrays();
     Statistics stats = new Statistics();
+    DataBaseManager dbm = new DataBaseManager();
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JKTV21_Shop2PU");
+    EntityManager em = emf.createEntityManager();
 
 //Did user input an int
     public Integer inputInt(int[] range){
@@ -114,9 +118,15 @@ public class Tools {
         }while (true);
 
         ars.addProduct(new Product(name, price, amount));
+        dbm.saveProduct(ars.getProducts().get(ars.getProducts().size()-1));
+        ars.getProducts().clear();
+        for(Product p : dbm.DBExtractProducts()){
+            ars.addProduct(p);
+        }
     }
 
     public void browseProducts(){
+        
         if(ars.getProducts().size() == 0){
             System.out.println("No Data");
         }
@@ -193,6 +203,7 @@ public class Tools {
         for(Product prod : products){
             total += prod.getCost();
             prod.substractStock();
+            dbm.changeProduct(prod);
         }
         //IF NEW CLIENT, THEN APPLY A DISCOUNT
         if(customer.getId() != 0){
@@ -205,6 +216,7 @@ public class Tools {
             //SUBSTRACT FROM CUSTROMERS's BALANCE
             if(customer.getBalance() > total){
                 customer.subtractBalance(total);
+                dbm.changeCustomer(customer);
             }
             else{
                 canAfford = false;
@@ -234,7 +246,7 @@ public class Tools {
         do {
             do {
                 System.out.println("Choose an id of a product.");
-                Integer productId = inputInt(new int[] {0, ars.getProducts().size()-1});
+                Integer productId = inputInt(new int[] {1, ars.getProducts().size()}) - 1;
                 if (productId != null && productId <= ars.getProducts().size() - 1) {
                     products.add(ars.getProducts().get(productId));
                     break;
@@ -305,13 +317,8 @@ public class Tools {
     public Customer createCustomer(){
         Customer customer = new Customer(true, false, 100.00);
         stats.addTotalRegisteredCustomers();
+        dbm.saveCustomer(customer);
         return customer;
-    }
-    
-    public void createNewCustomer(){
-        Customer customer = new Customer(true, false, 100.00);
-        stats.addTotalRegisteredCustomers();
-        ars.addCustomer(customer);
     }
     
     public void addBalanceToCustomer(){
@@ -325,170 +332,23 @@ public class Tools {
         money = inputDouble(new double[] {0.01, 10000});
         
         ars.getCustomers().get(id).addBalance(money);
+        dbm.changeCustomer(ars.getCustomers().get(id));
     }
     
     public void addStock(){
         int input, amount;
         
         System.out.println("Choose a product to replenish:");
-        input = inputInt(new int[] {0, ars.getProducts().size()});
+        input = inputInt(new int[] {1, ars.getProducts().size()});
         
         System.out.println("Choose an amount of products to add:");
         amount = inputInt(new int[] {1, 10000});
         
-        ars.getProducts().get(input).addStock(amount);
+        ars.getProducts().get(input-1).addStock(amount);
+        dbm.changeProduct(ars.getProducts().get(input-1));
         
     }
-        
-    //WHEN USER OPENS APPLICATION
-    //READ FROM FILES
-    public void onOpen(){
-
-        //FILES
-            if(!new File("data").exists()){
-                new File("data").mkdirs();
-            }
-
-        File prods = new File("data\\products.txt");
-        File custs = new File("data\\customers.txt");
-        File purcs = new File("data\\purchases.txt");
             
-        try{
-            if(prods.createNewFile()) System.out.println("File created");
-            if(custs.createNewFile()) System.out.println("File created"); 
-            if(purcs.createNewFile()) System.out.println("File created");
-        }
-        catch(Exception e){
-            System.err.println(e);
-        }
-        
-        if(prods.canRead() && prods.length() != 0){
-            extractProducts();
-        }
-          
-        if(custs.canRead() && custs.length() != 0){
-            extractCustomers();
-        }
-        else{
-            ars.addCustomer(new Customer(false, false));
-        }
-
-        if(purcs.canRead() && purcs.length() != 0){
-            extractPurchases();
-        }
-    }
-    
-    public void extractProducts(){
-        ArrayList<Product> arr = new ArrayList<>();
-        try{
-                FileInputStream file = new FileInputStream("data\\products.txt");
-                ObjectInputStream input = new ObjectInputStream(file);
-                
-                arr = (ArrayList<Product>) input.readObject();
-                input.close();
-        }
-        catch(Exception e){
-            System.err.println(e);
-        }
-        
-        ars.setProducts(arr);
-        Product.setCounter(arr.size());
-    }
-    
-    public void extractCustomers(){
-        ArrayList<Customer> arr = new ArrayList<>();
-        try{
-            FileInputStream file = new FileInputStream("data\\customers.txt");
-            ObjectInputStream input = new ObjectInputStream(file);
-
-            arr = (ArrayList<Customer>) input.readObject();
-            input.close();
-        }
-        catch(Exception e){
-            System.err.println(e);
-        }
-
-        ars.setCustomers(arr);
-        Customer.setCounter(arr.size());
-    }
-
-    public void extractPurchases(){
-        ArrayList<Purchase> arr = new ArrayList<>();
-        try{
-                FileInputStream file = new FileInputStream("data\\purchases.txt");
-                ObjectInputStream input = new ObjectInputStream(file);
-                
-                arr = (ArrayList<Purchase>) input.readObject();
-                input.close();
-        }
-        catch(Exception e){
-            System.err.println(e);
-        }
-        ars.setPurchases(arr);
-        Purchase.setCounter(arr.size());
-    } 
-      
-    //WHEN USER CLOSES APPLICATION
-    //WRITE TO FILES
-    public void onClose(){
-        //IF THERE ARE ELEMENTS IN PRODUCTS
-        if(ars.getProducts().size() != 0){
-            //PRODUCTS
-            try{
-                FileOutputStream fileProducts = new FileOutputStream("data\\products.txt");
-                ObjectOutputStream outputProducts = new ObjectOutputStream(fileProducts);
-
-                outputProducts.writeObject(ars.getProducts());
-                outputProducts.close();
-            }
-            catch(Exception e){
-                System.err.println(e);
-            }  
-        }
-        
-        //IF THERE ARE ELEMENTS IN CUSTOMERS
-        if(ars.getCustomers().size() != 0){
-            //CUSTOMERS
-            try{
-                FileOutputStream fileCustomers = new FileOutputStream("data\\customers.txt");
-                ObjectOutputStream outputCustomers = new ObjectOutputStream(fileCustomers);
-
-                outputCustomers.writeObject(ars.getCustomers());
-                outputCustomers.close();
-            }
-            catch(Exception e){
-                System.err.println(e);
-            }  
-        }
-        
-        //IF THERE ARE ELEMENTS IN PURCHASES
-        if(ars.getPurchases().size() != 0){
-            //PURCHASES
-            try{
-                FileOutputStream filePurchases = new FileOutputStream("data\\purchases.txt");
-                ObjectOutputStream outputPurchases = new ObjectOutputStream(filePurchases);
-
-                outputPurchases.writeObject(ars.getPurchases());
-                outputPurchases.close();
-            }
-            catch(Exception e){
-                System.err.println(e);
-            }  
-        }
-        
-        //SAVE STATS
-        try{
-            FileOutputStream fileStats = new FileOutputStream("data\\statistics.txt");
-            ObjectOutputStream outputStats = new ObjectOutputStream(fileStats);
-
-            outputStats.writeObject(stats);
-            outputStats.close();
-            }
-            catch(Exception e){
-                System.err.println(e);
-            }
-    }
-    
     //STATISTICS FOR DIFFERENT TIME RANGES
     
     public void createDateRanges(){
@@ -536,5 +396,15 @@ public class Tools {
                 + "Total earned: " + costs[3] + "\n";
         
             System.out.println(out);
+    }
+
+    public void onOpenDB(){
+        
+        for(Product p : dbm.DBExtractProducts()){
+            ars.addProduct(p);
+        }
+        for(Customer c : dbm.DBExtractCustomers()){
+            ars.addCustomer(c);
+        }
     }
 }

@@ -1,39 +1,41 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class Customer implements Serializable {
-    private static int counter = 0;
-    
-    private final int Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private boolean Registered;
     private boolean UsedDiscount;
     private Double balance;
     
         public Customer(boolean Registered, boolean UsedDiscount, Double balance) {
-        this.Id = counter++;
         this.Registered = Registered;
         this.UsedDiscount = UsedDiscount;
         this.balance = balance;
     }
 
     public Customer(boolean Registered, boolean UsedDiscount) {
-        this.Id = counter++;
         this.Registered = Registered;
         this.UsedDiscount = UsedDiscount;
         this.balance = 0.00;
     }
 
-    public int getId() {
-        return Id;
+    public Customer() {
     }
 
-    public static int getCounter() {
-        return counter;
+    public Long getId() {
+        return id;
     }
-
-    public static void setCounter(int counter) {
-        Customer.counter = counter;
+    
+    public void setId(Long id){
+        this.id = id;
     }
 
     public boolean isRegistered() {
@@ -71,7 +73,7 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return "Customer" + 
-                " : Id=" + Id + 
+                " : Id=" + id + 
                 " --- Registered=" + Registered + 
                 " --- UsedDiscount=" + UsedDiscount + 
                 " --- balance=" + balance;

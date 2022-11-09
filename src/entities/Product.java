@@ -1,28 +1,40 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
 public class Product implements Serializable{
-    private static int counter = 0;
-    private final int Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String Name;
     private Double Cost;
     private Integer amount;
+//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE});
    
     public Product(String Name, Double Cost, Integer amount) {
-        this.Id = counter++;
         this.Name = Name;
         this.Cost = Cost;
         this.amount = amount;
     }
-
-    public static int getCounter() {
-        return counter;
+    
+    public Product(){
+        
     }
 
-    public static void setCounter(int counter) {
-        Product.counter = counter;
+    public Long getId() {
+        return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public String getName() {
         return Name;
@@ -44,6 +56,10 @@ public class Product implements Serializable{
         return amount;
     }
     
+    public void setAmount(Integer amount){
+        this.amount = amount;
+    }
+    
     public void addStock(Integer amount){
         this.amount += amount;
     }
@@ -55,7 +71,7 @@ public class Product implements Serializable{
     @Override
     public String toString() {
         return "Product" + 
-                " : Id=" + Id + 
+                " : Id=" + id + 
                 " --- Name=" + Name + 
                 " --- Cost=" + Cost + 
                 " --- In stock=" + amount + "\n";

@@ -1,5 +1,6 @@
 package jktv21_shop2;
 
+import entities.Customer;
 import tools.Messages;
 import tools.Tools;
 
@@ -9,7 +10,9 @@ public class App {
         Messages msg = new Messages();
         
         //APP START
-        tool.onOpen();
+//        tool.onOpen();
+        //APP START WITH DB CONNECTION
+          tool.onOpenDB();
         
         //TESTING
         tool.createDateRanges();
@@ -60,7 +63,7 @@ public class App {
                                     tool.createProduct();
                                     break;
                                 case 2:
-                                    tool.createNewCustomer();
+                                    tool.createCustomer();
                                     break;
                                 case 3:
                                     tool.createPurchase();
@@ -95,8 +98,5 @@ public class App {
                 }
  
         }while(mainloop);
-        
-        //APP END
-        tool.onClose();
     }
 }
