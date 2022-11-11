@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 public class Product implements Serializable{
@@ -56,16 +55,16 @@ public class Product implements Serializable{
         return amount;
     }
     
-    public void setAmount(Integer amount){
+    public void setAmount(int amount){
         this.amount = amount;
     }
     
-    public void addStock(Integer amount){
+    public void addStock(int amount){
         this.amount += amount;
     }
     
-    public void substractStock(){
-        this.amount -= 1;
+    public void substractStock(int amount){
+        this.amount -= amount;
     }
 
     @Override

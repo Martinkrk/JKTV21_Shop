@@ -1,6 +1,5 @@
 package jktv21_shop2;
 
-import entities.Customer;
 import tools.Messages;
 import tools.Tools;
 

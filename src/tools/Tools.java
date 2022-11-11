@@ -1,21 +1,19 @@
 package tools;
 
-import com.mysql.jdbc.DatabaseMetaData;
 import entities.Customer;
 import entities.Product;
 import entities.Purchase;
 import entities.Statistics;
 import entities.shopArrays;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+//import java.io.File;
+//import java.io.FileInputStream;
+//import java.io.FileOutputStream;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.ResultSet;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -24,19 +22,13 @@ import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 public class Tools {
     Scanner scn = new Scanner(System.in);
     shopArrays ars = new shopArrays();
     Statistics stats = new Statistics();
     DataBaseManager dbm = new DataBaseManager();
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("JKTV21_Shop2PU");
-    EntityManager em = emf.createEntityManager();
 
 //Did user input an int
     public Integer inputInt(int[] range){
@@ -174,6 +166,8 @@ public class Tools {
             if(customer != null) break;
         }while (true);
 
+        
+        //Collect all instances and count them
         ArrayList<Product> products;
         products = addProducts();
         HashMap<Product, Integer> countedMap = new HashMap<>();
@@ -185,27 +179,22 @@ public class Tools {
                 countedMap.put(prod, 1);
             }
         }
-        System.out.println(countedMap);
-        
-        double total = 0;
-        boolean instock = true;
+        //Check if any product is in stock
         for(Product prod : countedMap.keySet()){
+            //If not enough in stock, then close method
             if(countedMap.get(prod) > prod.getAmount()){
-                instock = false;
-                break;
+                System.err.println("Not enough products in stock!");
+                return;
             }
         }
-        if(instock == false){
-            System.err.println("Not enough products in stock!");
-            return;
-        }
         
-        for(Product prod : products){
-            total += prod.getCost();
-            prod.substractStock();
-            dbm.changeProduct(prod);
+        //If in stock, then substract from stock
+        for(Product prod : countedMap.keySet()){
+            prod.substractStock(countedMap.get(prod));
         }
+
         //IF NEW CLIENT, THEN APPLY A DISCOUNT
+        double total = 0;
         if(customer.getId() != 0){
             if(customer.isUsedDiscount() == false){
                 customer.setUsedDiscount(true);

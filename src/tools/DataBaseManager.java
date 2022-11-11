@@ -14,11 +14,12 @@ public class DataBaseManager {
     
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("JKTV21_Shop2PU");
     EntityManager em = emf.createEntityManager();
+    EntityTransaction tx = em.getTransaction();
     
     shopArrays ars = new shopArrays();
     
     public void saveProducts(ArrayList<Product> products){;
-        EntityTransaction tx = em.getTransaction();
+        
         tx.begin();
         for(int i = 0; i < products.size() ;i++){
             Product prod = products.get(i);
@@ -31,7 +32,6 @@ public class DataBaseManager {
     }
     
     public void saveProduct(Product product){
-        EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.persist(product);
         tx.commit();
@@ -49,14 +49,12 @@ public class DataBaseManager {
         clone.setAmount(product.getAmount());
         clone.setId(product.getId());
         
-        EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.merge(clone);
         tx.commit();
     }
     
     public void saveCustomer(Customer customer){
-        EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.persist(customer);
         tx.commit();
@@ -74,7 +72,6 @@ public class DataBaseManager {
         clone.setBalance(customer.getBalance());
         clone.setId(customer.getId());
         
-        EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.merge(clone);
         tx.commit();
