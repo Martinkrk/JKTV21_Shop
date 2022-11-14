@@ -1,10 +1,13 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Product implements Serializable{
@@ -14,7 +17,9 @@ public class Product implements Serializable{
     private String Name;
     private Double Cost;
     private Integer amount;
-//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE});
+    
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Purchase.class)
+    private ArrayList<Purchase> purchases;
    
     public Product(String Name, Double Cost, Integer amount) {
         this.Name = Name;

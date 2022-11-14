@@ -2,6 +2,7 @@ package tools;
 
 import entities.Customer;
 import entities.Product;
+import entities.Purchase;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -79,5 +80,16 @@ public class DataBaseManager {
     
     public List<Customer> getCustomers(){
         return em.createQuery("SELECT p FROM Customer p").getResultList();
+    }
+    
+    public void savePurchase(Customer customer, ArrayList<Product> products, Purchase purchase){
+        tx.begin();
+        em.persist(purchase);
+        for(Product product : products){
+            if(product.getId() == null){
+                em.persist(product);
+            }
+        }
+        tx.commit();
     }
 }
