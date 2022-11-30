@@ -214,9 +214,10 @@ public class Tools {
         }
         if(canAfford){
             
-            Purchase purchase = new Purchase(customer.toString()); 
+            Purchase purchase = new Purchase(); 
+            purchase.addCustomer(customer);
             for(Product p : products){
-                purchase.addProduct(p.toString());
+                purchase.addProduct(p);
                 stats.addTotalProductsSold();
             }
             purchase.setTotalPrice(total);

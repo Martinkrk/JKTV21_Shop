@@ -52,8 +52,8 @@ public class DataBaseManager {
         
         tx.begin();
         em.merge(clone);
-        tx.commit();
-    }
+        tx.commit(); 
+   }
     
     public void saveCustomer(Customer customer){
         tx.begin();
