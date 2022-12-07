@@ -17,9 +17,22 @@ public class shopArrays {
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Customer> customers = new ArrayList<>();
     private ArrayList<Purchase> purchases = new ArrayList<>();
+    private ArrayList<PurchaseProduct> pp = new ArrayList<>();
     private ArrayList<LocalDateTime> dates = new ArrayList<>();
 
     public shopArrays() {
+    }
+
+    public ArrayList<PurchaseProduct> getPp() {
+        return pp;
+    }
+
+    public void setPp(ArrayList<PurchaseProduct> pp) {
+        this.pp = pp;
+    }
+    
+    public void addPp(PurchaseProduct pp) {
+        this.pp.add(pp);
     }
 
     public ArrayList<Product> getProducts() {

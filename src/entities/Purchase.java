@@ -4,17 +4,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import tools.Tools;
 
 @Entity
 public class Purchase implements Serializable {
@@ -26,15 +22,12 @@ public class Purchase implements Serializable {
     
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     private Customer customer;
-    @OneToMany(mappedBy = "purchase")
-    private List<PurchaseProduct> pp;
-
+    
     public Purchase() {
-        this.totalPrice = totalPrice;
-        this.purchaseDate = createDate();
+        
     }
-
-    public Purchase(Customer customer, List<Product> products, double totalPrice) {
+    
+    public Purchase(Customer customer, double totalPrice) {
         this.totalPrice = totalPrice;
         this.purchaseDate = createDate();
         
@@ -62,13 +55,15 @@ public class Purchase implements Serializable {
 //        return products;
 //    }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public Long getId() {
+        return id;
     }
-    
-    public void addProduct(Product product) {
-        this.products.add(product);
+
+    public void setId(Long id) {
+        this.id = id;
     }
+
+
     
     public void addCustomer(Customer customer){
         this.customer = customer;
@@ -82,18 +77,19 @@ public class Purchase implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-//    @Override
-//    public String toString() {
-//        String cust = "\t" + customer + "\n";
-//        String prods = "";
-//        for(String prod : products){
-//            prods += "\t" + prod;
-//        }
-//        return "Purchase" + 
-//                " : Id=" + Id + 
-//                " --- Total Price=" + totalPrice +
-//                " --- Purchase Date=" + purchaseDate + "\n" +
-//                cust +
-//                prods;
-//    }  
+    @Override
+    public String toString() {
+        Tools tool = new Tools();
+        String cust = "\t" + customer + "\n";
+        String prods = "";
+        for(Product prod : tool.getProductsForPurchase(this)){
+            prods += "\t" + prod;
+        }
+        return "Purchase" + 
+                " : Id=" + id + 
+                " --- Total Price=" + totalPrice +
+                " --- Purchase Date=" + purchaseDate + "\n" +
+                cust +
+                prods;
+    }  
 }

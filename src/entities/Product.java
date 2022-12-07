@@ -1,14 +1,10 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Product implements Serializable{
@@ -19,9 +15,7 @@ public class Product implements Serializable{
     private Double Cost;
     private Integer amount;
     
-    @OneToMany(mappedBy = "product")
-    private List<PurchaseProduct> pp;
-   
+ 
     public Product(String Name, Double Cost, Integer amount) {
         this.Name = Name;
         this.Cost = Cost;

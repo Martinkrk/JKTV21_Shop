@@ -3,14 +3,9 @@ package tools;
 import entities.Customer;
 import entities.Product;
 import entities.Purchase;
+import entities.PurchaseProduct;
 import entities.Statistics;
 import entities.shopArrays;
-
-//import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.FileOutputStream;
-//import java.io.ObjectInputStream;
-//import java.io.ObjectOutputStream;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -22,6 +17,7 @@ import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class Tools {
@@ -188,13 +184,14 @@ public class Tools {
             }
         }
         
+        double total = 0;
         //If in stock, then substract from stock
         for(Product prod : countedMap.keySet()){
             prod.substractStock(countedMap.get(prod));
+            total += prod.getCost();
         }
 
         //IF NEW CLIENT, THEN APPLY A DISCOUNT
-        double total = 0;
         if(customer.getId() != 0){
             if(customer.isUsedDiscount() == false){
                 customer.setUsedDiscount(true);
@@ -214,10 +211,11 @@ public class Tools {
         }
         if(canAfford){
             
-            Purchase purchase = new Purchase(); 
+            Purchase purchase = new Purchase();
             purchase.addCustomer(customer);
-            for(Product p : products){
-                purchase.addProduct(p);
+            for(Product prod : countedMap.keySet()){
+                PurchaseProduct pp = new PurchaseProduct(purchase, prod, countedMap.get(prod));
+                dbm.savePurchaseProduct(pp);
                 stats.addTotalProductsSold();
             }
             purchase.setTotalPrice(total);
@@ -225,6 +223,7 @@ public class Tools {
             //ADD TO SHOP's EARNINGS
             stats.addTotalEarnings(total);
 
+            dbm.savePurchase(purchase);
             ars.addPurchase(purchase);
         }
     }
@@ -396,5 +395,25 @@ public class Tools {
         for(Customer c : dbm.DBExtractCustomers()){
             ars.addCustomer(c);
         }
+        for(Purchase u : dbm.DBExtractPurchases()){
+            ars.addPurchase(u);
+        }
+        for(PurchaseProduct pp : dbm.DBExtractPurchaseProduct()){
+            ars.addPp(pp);
+        }
+        
+    }
+    
+    public ArrayList<Product> getProductsForPurchase(Purchase purchase) {
+        for(PurchaseProduct pp : dbm.DBExtractPurchaseProduct()){
+            ars.addPp(pp);
+        }
+        ArrayList<Product> prods = new ArrayList<>();
+        for(PurchaseProduct pp : ars.getPp()) {
+            if(pp.getPurchase().getId() == purchase.getId()) {
+                prods.add(pp.getProduct());
+            }
+        }
+        return prods;
     }
 }

@@ -1,12 +1,15 @@
 package jktv21_shop2;
 
+import entities.Product;
+import entities.Purchase;
+import java.util.ArrayList;
 import tools.Messages;
 import tools.Tools;
 
 public class App {
-    public void run(){
         Tools tool = new Tools();
         Messages msg = new Messages();
+    public void run(){
         
         //APP START
 //        tool.onOpen();
